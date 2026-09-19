@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface NavbarProps {
     cmsData?: Record<string, any>;
@@ -106,46 +106,73 @@ export default function Navbar({ cmsData }: NavbarProps) {
                     </a>
                 </div>
 
-                {/* Mobile menu toggle */}
+                {/* Mobile menu toggle with smooth animation */}
                 <button
-                    className={`md:hidden p-2 rounded-lg transition-colors ${isHeaderSolid ? 'hover:bg-slate-100' : 'hover:bg-white/10'}`}
+                    className={`md:hidden relative w-11 h-11 flex items-center justify-center rounded-xl transition-all duration-300 active:scale-90 ${
+                        isHeaderSolid 
+                            ? 'hover:bg-slate-100 text-slate-900' 
+                            : 'hover:bg-white/15 text-white'
+                    } ${mobileMenuOpen ? (isHeaderSolid ? 'bg-slate-100' : 'bg-white/15') : ''}`}
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
                 >
-                    {mobileMenuOpen ? (
-                        <X size={28} className={isHeaderSolid ? 'text-slate-900' : 'text-white'} />
-                    ) : (
-                        <Menu size={28} className={isHeaderSolid ? 'text-slate-900' : 'text-white'} />
-                    )}
+                    <div className="w-6 h-5 relative flex flex-col justify-between items-center pointer-events-none">
+                        {/* Top Line */}
+                        <span
+                            className={`w-6 h-0.5 rounded-full transition-all duration-300 ease-in-out origin-center ${
+                                isHeaderSolid ? 'bg-slate-900' : 'bg-white'
+                            } ${
+                                mobileMenuOpen ? 'rotate-45 translate-y-[9px]' : 'rotate-0 translate-y-0'
+                            }`}
+                        />
+                        {/* Middle Line */}
+                        <span
+                            className={`w-6 h-0.5 rounded-full transition-all duration-200 ease-in-out ${
+                                isHeaderSolid ? 'bg-slate-900' : 'bg-white'
+                            } ${
+                                mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
+                            }`}
+                        />
+                        {/* Bottom Line */}
+                        <span
+                            className={`w-6 h-0.5 rounded-full transition-all duration-300 ease-in-out origin-center ${
+                                isHeaderSolid ? 'bg-slate-900' : 'bg-white'
+                            } ${
+                                mobileMenuOpen ? '-rotate-45 -translate-y-[9px]' : 'rotate-0 translate-y-0'
+                            }`}
+                        />
+                    </div>
                 </button>
             </div>
 
             {/* Mobile Nav */}
             {mobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-slate-100 flex flex-col p-4 sm:p-6 space-y-4 animate-fade-in">
+                <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-2xl border-t border-slate-100 flex flex-col p-5 sm:p-6 space-y-3 animate-menu-dropdown origin-top">
                     {navLinks.map(link => (
                         <a
                             key={link.name}
                             href={link.href}
                             onClick={(e) => handleNavClick(e, link.href)}
-                            className="text-slate-700 font-medium text-base sm:text-lg py-2 border-b border-slate-50 hover:text-[#b08d57] transition-colors"
+                            className="text-slate-800 font-semibold text-base sm:text-lg py-2.5 px-3 rounded-xl border-b border-slate-100/60 hover:text-[#b08d57] hover:bg-slate-50 transition-all flex items-center justify-between group"
                         >
-                            {link.name}
+                            <span>{link.name}</span>
+                            <ArrowRight size={16} className="text-slate-300 group-hover:text-[#b08d57] group-hover:translate-x-1 transition-all" />
                         </a>
                     ))}
                     <a
                         href={headerSettings?.buttonLink || `https://wa.me/${contactData?.phone?.replace(/[^0-9]/g, '') || '6285113723808'}?text=Halo AGMAL JAYA INTERIOR, saya ingin konsultasi.`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-4 mt-4 bg-[#b08d57] text-white rounded-xl font-bold shadow-md shadow-[#b08d57]/20 active:scale-[0.98] transition-all"
+                        className="flex items-center justify-center gap-2 w-full py-3.5 mt-2 bg-[#b08d57] text-white rounded-xl font-bold shadow-md shadow-[#b08d57]/20 active:scale-[0.98] transition-all"
                     >
-                        {headerSettings?.buttonLabel || 'Hubungi Kami Sekarang'} <ArrowRight size={20} />
+                        {headerSettings?.buttonLabel || 'Hubungi Kami Sekarang'} <ArrowRight size={18} />
                     </a>
                     {contactData?.phone && (
                         <a 
                             href={`https://wa.me/${contactData.phone.replace(/[^0-9]/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2 w-full py-4 border-2 border-slate-200 text-slate-700 rounded-xl font-bold"
+                            className="flex items-center justify-center gap-2 w-full py-3 border border-slate-200 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-colors"
                         >
                             Hubungi WhatsApp
                         </a>
