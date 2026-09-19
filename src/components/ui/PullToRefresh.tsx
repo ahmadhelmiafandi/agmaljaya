@@ -118,12 +118,12 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
   const canopyTranslateY = isRefreshing
     ? 0
     : pullDistance > 0
-    ? Math.min(pullDistance - 72, 6)
+    ? Math.min(pullDistance - 70, 6)
     : -130;
 
   return (
     <>
-      {/* Pull-to-Refresh Curved Canopy & Badge (Matches Reference Image 2) */}
+      {/* Pull-to-Refresh Liquid Water Wave Canopy & Badge */}
       <div
         className={`fixed top-0 left-0 right-0 z-[100] pointer-events-none flex flex-col items-center transition-transform ${
           isRefreshing
@@ -137,21 +137,28 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
           opacity: showIndicator ? 1 : 0,
         }}
       >
-        {/* Solid white top bar */}
-        <div className="w-full h-8 bg-white" />
-
-        {/* Curved Wave Dip SVG */}
+        {/* Seamless Fluid Water Wave SVG (No seams, purely smooth C2 cubic curves) */}
         <div className="w-full relative">
           <svg
-            viewBox="0 0 400 48"
+            viewBox="0 0 400 64"
             preserveAspectRatio="none"
-            className="w-full h-10 fill-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.08)] block"
+            className="w-full h-16 block filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
           >
-            <path d="M 0 0 L 400 0 L 400 6 Q 295 14 238 26 C 222 39 212 45 200 45 C 188 45 178 39 162 26 Q 105 14 0 6 Z" />
+            {/* Secondary Soft Water Wave Ripple */}
+            <path
+              d="M 0 -200 L 400 -200 L 400 10 C 300 12 250 24 232 38 C 218 50 210 56 200 56 C 190 56 182 50 168 38 C 150 24 100 12 0 10 Z"
+              fill="rgba(255, 255, 255, 0.45)"
+            />
+
+            {/* Primary Pure White Fluid Water Wave */}
+            <path
+              d="M 0 -200 L 400 -200 L 400 6 C 290 8 245 18 228 32 C 216 44 208 50 200 50 C 192 50 184 44 172 32 C 155 18 110 8 0 6 Z"
+              fill="#ffffff"
+            />
           </svg>
 
-          {/* White Circular Refresh Badge resting in the curved dip */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-1.5 w-11 h-11 bg-white rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.12)] border border-slate-100/90 flex items-center justify-center p-2">
+          {/* White Circular Refresh Badge resting seamlessly in the wave cradle */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-1.5 w-11 h-11 bg-white rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.12)] border border-slate-100 flex items-center justify-center p-2">
             <RotateCw
               size={22}
               className={`transition-colors ${
