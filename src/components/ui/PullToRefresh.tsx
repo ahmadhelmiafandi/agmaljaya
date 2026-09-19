@@ -3,21 +3,14 @@ import { RotateCw } from 'lucide-react';
 
 interface PullToRefreshProps {
   onRefresh?: () => Promise<void> | void;
-  onPullChange?: (active: boolean) => void;
   children?: React.ReactNode;
 }
 
-export default function PullToRefresh({ onRefresh, onPullChange, children }: PullToRefreshProps) {
+export default function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const startY = useRef(0);
   const isPulling = useRef(false);
-
-  // Notify parent component (Home/Navbar) to activate solid white mode
-  useEffect(() => {
-    const active = isRefreshing || pullDistance > 3;
-    onPullChange?.(active);
-  }, [pullDistance, isRefreshing, onPullChange]);
 
   useEffect(() => {
     // Touch event handlers for mobile
@@ -34,11 +27,11 @@ export default function PullToRefresh({ onRefresh, onPullChange, children }: Pul
       const delta = currentY - startY.current;
 
       if (delta > 0 && window.scrollY <= 5) {
-        // Highly responsive, instant fluid tracking
-        const distance = Math.min(delta * 0.65, 65);
+        // Smooth, instant fluid tracking
+        const distance = Math.min(delta * 0.65, 75);
         setPullDistance(distance);
         // Prevent native browser overscroll/pull
-        if (delta > 8 && e.cancelable) {
+        if (delta > 10 && e.cancelable) {
           e.preventDefault();
         }
       } else {
@@ -50,10 +43,10 @@ export default function PullToRefresh({ onRefresh, onPullChange, children }: Pul
       if (!isPulling.current) return;
       isPulling.current = false;
 
-      // Sensitive trigger threshold (~28px of pull)
+      // Sensitive trigger threshold (~26px of pull)
       if (pullDistance >= 26) {
         setIsRefreshing(true);
-        setPullDistance(0); // The elastic wave snaps back up immediately (Frame 4 & 5)
+        setPullDistance(0);
 
         try {
           if ('vibrate' in navigator) navigator.vibrate(25);
@@ -62,10 +55,10 @@ export default function PullToRefresh({ onRefresh, onPullChange, children }: Pul
         try {
           if (onRefresh) {
             await Promise.resolve(onRefresh());
-            // Hold briefly for visual satisfaction (Frame 5)
-            await new Promise((res) => setTimeout(res, 700));
+            // Hold briefly for visual satisfaction (matching Frame 5 of reference)
+            await new Promise((res) => setTimeout(res, 750));
           } else {
-            await new Promise((res) => setTimeout(res, 800));
+            await new Promise((res) => setTimeout(res, 850));
             window.location.reload();
             return;
           }
@@ -91,7 +84,7 @@ export default function PullToRefresh({ onRefresh, onPullChange, children }: Pul
       if (!isPulling.current || isRefreshing) return;
       const delta = e.clientY - startY.current;
       if (delta > 0 && window.scrollY <= 5) {
-        const distance = Math.min(delta * 0.65, 65);
+        const distance = Math.min(delta * 0.65, 75);
         setPullDistance(distance);
       } else {
         setPullDistance(0);
@@ -123,64 +116,35 @@ export default function PullToRefresh({ onRefresh, onPullChange, children }: Pul
     };
   }, [isRefreshing, pullDistance, onRefresh]);
 
-  // Gentle, wide, full-width fluid wave (spans entire 400px width with soft, gentle curvature)
-  const dipDepth = pullDistance > 0 ? Math.min(pullDistance * 0.55, 26) : 0;
-  const baseY = 1;
-  const centerDipY = baseY + dipDepth;
-
-  // Ultra-smooth full-width Bezier wave (no sharp angles or narrow V-wedges)
-  const wavePath = `M 0 -100 L 400 -100 L 400 ${baseY} C 310 ${baseY}, 255 ${centerDipY}, 200 ${centerDipY} C 145 ${centerDipY}, 90 ${baseY}, 0 ${baseY} Z`;
-
-  // Circle vertical position below the header:
-  // - While pulling: nestled right in the gentle wave dip
-  // - While refreshing (Frame 5): floats below the header at top: 68px
-  // - At rest: tucked away
-  const circleTop = isRefreshing
-    ? 68
-    : pullDistance > 0
-    ? Math.max(48 + centerDipY - 14, 20)
-    : -60;
-
-  const showCircle = isRefreshing || pullDistance > 6;
+  const showCircle = isRefreshing || pullDistance > 5;
   const rotationAngle = isRefreshing ? undefined : (pullDistance / 26) * 360;
+
+  // Floating position:
+  // - While pulling: smoothly descends below the navbar (from top 15px down to ~80px)
+  // - While refreshing (Frame 5): stays floating at top: 80px
+  // - At rest: tucked away off-screen (-60px)
+  const circleTop = isRefreshing
+    ? 80
+    : pullDistance > 0
+    ? Math.min(15 + pullDistance * 1.0, 85)
+    : -60;
 
   return (
     <>
-      {/* Massive 600px pure white ceiling preventing ANY brown gap during iOS Safari rubber-band overscroll */}
-      <div className={`fixed top-[-600px] left-0 right-0 h-[600px] bg-white z-[60] transition-opacity duration-200 ${
-        isRefreshing || pullDistance > 0 ? 'opacity-100' : 'opacity-0'
-      }`} />
-
-      {/* Gentle Fluid Water Wave attached to bottom edge of the white Navbar */}
+      {/* Floating Refresh Badge (Clean, elegant, matches Frame 5 of reference without touching header) */}
       <div
-        className={`fixed top-[52px] md:top-[60px] left-0 right-0 z-[45] pointer-events-none ${
-          isPulling.current ? 'transition-none' : 'transition-all duration-300 ease-out'
-        }`}
-        style={{
-          opacity: pullDistance > 0 ? 1 : 0,
-        }}
-      >
-        <svg
-          viewBox="0 0 400 45"
-          preserveAspectRatio="none"
-          className="w-full h-9 block filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.06)] fill-white"
-        >
-          <path d={wavePath} />
-        </svg>
-      </div>
-
-      {/* Floating Refresh Badge (Matches Frame 2, 3, and 5) */}
-      <div
-        className={`fixed left-1/2 -translate-x-1/2 z-[65] pointer-events-none ${
+        className={`fixed left-1/2 -translate-x-1/2 z-[100] pointer-events-none ${
           isPulling.current ? 'transition-none' : 'transition-all duration-300 ease-out'
         }`}
         style={{
           top: `${circleTop}px`,
           opacity: showCircle ? 1 : 0,
-          transform: `translateX(-50%) scale(${showCircle ? (isRefreshing ? 1 : Math.min(0.6 + (pullDistance / 26) * 0.4, 1)) : 0.5})`,
+          transform: `translateX(-50%) scale(${
+            showCircle ? (isRefreshing ? 1 : Math.min(0.5 + (pullDistance / 26) * 0.5, 1)) : 0.4
+          })`,
         }}
       >
-        <div className="w-11 h-11 bg-white rounded-full shadow-[0_6px_20px_rgba(0,0,0,0.14)] border border-slate-100 flex items-center justify-center p-2">
+        <div className="w-11 h-11 bg-white rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.35)] border border-slate-100 flex items-center justify-center p-2">
           <RotateCw
             size={22}
             className={`transition-colors ${

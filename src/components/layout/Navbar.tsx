@@ -4,10 +4,9 @@ import { ArrowRight } from 'lucide-react';
 
 interface NavbarProps {
     cmsData?: Record<string, any>;
-    forceSolid?: boolean;
 }
 
-export default function Navbar({ cmsData, forceSolid }: NavbarProps) {
+export default function Navbar({ cmsData }: NavbarProps) {
     const contactData = cmsData?.contact;
     const headerSettings = cmsData?.header;
     const siteSettings = cmsData?.site;
@@ -45,16 +44,12 @@ export default function Navbar({ cmsData, forceSolid }: NavbarProps) {
         }
     };
 
-    const isHeaderSolid = isScrolled || mobileMenuOpen || forceSolid;
+    const isHeaderSolid = isScrolled || mobileMenuOpen;
     const navTextColor = isHeaderSolid ? 'text-slate-800 hover:text-[#7a531e] font-medium' : 'text-slate-200 hover:text-white font-medium';
 
     return (
-        <>
-            {/* Pure white overscroll ceiling preventing iOS Safari rubber-band brown gap */}
-            <div className={`fixed top-[-600px] left-0 right-0 h-[600px] bg-white z-50 transition-opacity duration-200 ${isHeaderSolid ? 'opacity-100' : 'opacity-0'}`} />
-
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isHeaderSolid ? 'bg-white shadow-md py-3 md:py-4' : 'bg-transparent py-4 md:py-6'}`}>
-                <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between">
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isHeaderSolid ? 'bg-white shadow-md py-3 md:py-4' : 'bg-transparent py-4 md:py-6'}`}>
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between">
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 md:gap-3 group" onClick={() => setMobileMenuOpen(false)}>
@@ -196,6 +191,5 @@ export default function Navbar({ cmsData, forceSolid }: NavbarProps) {
                 </div>
             )}
         </header>
-        </>
     );
 }
