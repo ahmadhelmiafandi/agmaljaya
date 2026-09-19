@@ -11,7 +11,7 @@ lerna-debug.log*
 .env
 .env.*
 *.local
-data/
+/data/
 *.db
 *.sqlite
 

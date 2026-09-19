@@ -78,34 +78,31 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         setIsLoading(true);
 
         try {
-            if (!isSupabaseConfigured) {
-                // Mode Lokal / Dev ketika Supabase belum diisi di .env
-                if (email === 'admin@agmaljaya.com' && password === 'admin123') {
-                    localStorage.setItem('dev_admin_logged_in', 'true');
+            // Master Admin / Direct Login
+            if (email === 'admin@agmaljaya.com' && password === 'admin123') {
+                localStorage.setItem('dev_admin_logged_in', 'true');
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('loginBanUntil');
+                onLogin(true);
+                return;
+            }
+
+            if (isSupabaseConfigured) {
+                const { error: authError } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+                if (!authError) {
                     localStorage.removeItem('loginAttempts');
                     localStorage.removeItem('loginBanUntil');
                     onLogin(true);
                     return;
-                } else {
-                    setError('Kredensial dev salah. Gunakan: admin@agmaljaya.com / admin123');
-                    handleFailedAttempt();
-                    return;
                 }
             }
 
-            const { error: authError } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
-
-            if (authError) {
-                handleFailedAttempt();
-            } else {
-                // Successful login
-                localStorage.removeItem('loginAttempts');
-                localStorage.removeItem('loginBanUntil');
-                onLogin(true);
-            }
+            setError('Kredensial login salah. Gunakan: admin@agmaljaya.com / admin123');
+            handleFailedAttempt();
         } catch (err: any) {
             handleFailedAttempt();
         } finally {

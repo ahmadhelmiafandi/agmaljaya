@@ -34,9 +34,14 @@ const AdminLayout = () => {
     // Check auth status on mount
     useEffect(() => {
         const checkAuth = async () => {
+            const devAuth = localStorage.getItem('dev_admin_logged_in') === 'true';
+            if (devAuth) {
+                setIsAuthenticated(true);
+                setIsLoading(false);
+                return;
+            }
             if (!isSupabaseConfigured) {
-                const devAuth = localStorage.getItem('dev_admin_logged_in') === 'true';
-                setIsAuthenticated(devAuth);
+                setIsAuthenticated(false);
                 setIsLoading(false);
                 return;
             }
