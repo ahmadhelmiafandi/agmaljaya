@@ -147,36 +147,47 @@ export default function Navbar({ cmsData }: NavbarProps) {
 
             {/* Mobile Nav */}
             {mobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-2xl border-t border-slate-100 flex flex-col p-5 sm:p-6 space-y-3 animate-menu-dropdown origin-top">
-                    {navLinks.map(link => (
+                <div className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-xl shadow-2xl border-t border-slate-100 flex flex-col p-5 sm:p-6 space-y-2 animate-menu-dropdown origin-top">
+                    <div className="flex flex-col space-y-1">
+                        {navLinks.map((link, idx) => (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                onClick={(e) => handleNavClick(e, link.href)}
+                                style={{ animationDelay: `${(idx + 1) * 55}ms` }}
+                                className="animate-menu-item text-slate-800 font-semibold text-base sm:text-lg py-3 px-3 rounded-xl border-b border-slate-100/70 hover:text-[#b08d57] hover:bg-slate-50/80 active:bg-slate-100/90 active:scale-[0.99] transition-all flex items-center justify-between group"
+                            >
+                                <span className="flex items-center gap-3">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#b08d57]/30 group-hover:bg-[#b08d57] group-hover:scale-125 transition-all duration-300"></span>
+                                    {link.name}
+                                </span>
+                                <ArrowRight size={17} className="text-slate-300 group-hover:text-[#b08d57] group-hover:translate-x-1.5 transition-all duration-300" />
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="pt-2 space-y-2.5">
                         <a
-                            key={link.name}
-                            href={link.href}
-                            onClick={(e) => handleNavClick(e, link.href)}
-                            className="text-slate-800 font-semibold text-base sm:text-lg py-2.5 px-3 rounded-xl border-b border-slate-100/60 hover:text-[#b08d57] hover:bg-slate-50 transition-all flex items-center justify-between group"
-                        >
-                            <span>{link.name}</span>
-                            <ArrowRight size={16} className="text-slate-300 group-hover:text-[#b08d57] group-hover:translate-x-1 transition-all" />
-                        </a>
-                    ))}
-                    <a
-                        href={headerSettings?.buttonLink || `https://wa.me/${contactData?.phone?.replace(/[^0-9]/g, '') || '6285113723808'}?text=Halo AGMAL JAYA INTERIOR, saya ingin konsultasi.`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-3.5 mt-2 bg-[#b08d57] text-white rounded-xl font-bold shadow-md shadow-[#b08d57]/20 active:scale-[0.98] transition-all"
-                    >
-                        {headerSettings?.buttonLabel || 'Hubungi Kami Sekarang'} <ArrowRight size={18} />
-                    </a>
-                    {contactData?.phone && (
-                        <a 
-                            href={`https://wa.me/${contactData.phone.replace(/[^0-9]/g, '')}`}
+                            href={headerSettings?.buttonLink || `https://wa.me/${contactData?.phone?.replace(/[^0-9]/g, '') || '6285113723808'}?text=Halo AGMAL JAYA INTERIOR, saya ingin konsultasi.`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2 w-full py-3 border border-slate-200 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-colors"
+                            style={{ animationDelay: `${(navLinks.length + 1) * 55}ms` }}
+                            className="animate-menu-cta flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#b08d57] to-[#9a7642] text-white rounded-xl font-bold shadow-lg shadow-[#b08d57]/25 hover:shadow-xl hover:shadow-[#b08d57]/35 active:scale-[0.98] transition-all"
                         >
-                            Hubungi WhatsApp
+                            {headerSettings?.buttonLabel || 'Hubungi Kami Sekarang'} <ArrowRight size={18} />
                         </a>
-                    )}
+                        {contactData?.phone && (
+                            <a 
+                                href={`https://wa.me/${contactData.phone.replace(/[^0-9]/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ animationDelay: `${(navLinks.length + 2) * 55}ms` }}
+                                className="animate-menu-cta flex items-center justify-center gap-2 w-full py-3 border border-slate-200 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-50 active:scale-[0.98] transition-all"
+                            >
+                                Hubungi WhatsApp
+                            </a>
+                        )}
+                    </div>
                 </div>
             )}
         </header>

@@ -183,6 +183,36 @@ body {
   animation: menu-dropdown 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes menu-item-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-menu-item {
+  animation: menu-item-slide-in 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes menu-cta-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-menu-cta {
+  animation: menu-cta-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .perspective-2000 {
   perspective: 2000px;
 }
