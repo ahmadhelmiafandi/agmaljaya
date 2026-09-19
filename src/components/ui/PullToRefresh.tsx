@@ -27,8 +27,13 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       const delta = currentY - startY.current;
 
       if (delta > 0 && window.scrollY <= 5) {
-        const distance = Math.min(delta * 0.45, 90);
+        // High sensitivity: instant response, no need to pull far down
+        const distance = Math.min(delta * 0.75, 75);
         setPullDistance(distance);
+        // Prevent native browser overscroll/pull
+        if (delta > 8 && e.cancelable) {
+          e.preventDefault();
+        }
       } else {
         setPullDistance(0);
       }
@@ -38,9 +43,10 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       if (!isPulling.current) return;
       isPulling.current = false;
 
-      if (pullDistance >= 55) {
+      // Sensitive trigger threshold (only ~48px of natural drag required)
+      if (pullDistance >= 36) {
         setIsRefreshing(true);
-        setPullDistance(60);
+        setPullDistance(45);
 
         try {
           if ('vibrate' in navigator) navigator.vibrate(25);
@@ -79,7 +85,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       if (!isPulling.current || isRefreshing) return;
       const delta = e.clientY - startY.current;
       if (delta > 0 && window.scrollY <= 5) {
-        const distance = Math.min(delta * 0.45, 90);
+        const distance = Math.min(delta * 0.75, 75);
         setPullDistance(distance);
       } else {
         setPullDistance(0);
@@ -93,7 +99,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
     };
 
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd);
 
     window.addEventListener('mousedown', handleMouseDown);
@@ -111,15 +117,15 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
     };
   }, [isRefreshing, pullDistance, onRefresh]);
 
-  const showIndicator = pullDistance > 5 || isRefreshing;
-  const rotationAngle = isRefreshing ? undefined : (pullDistance / 55) * 360;
+  const showIndicator = pullDistance > 3 || isRefreshing;
+  const rotationAngle = isRefreshing ? undefined : (pullDistance / 36) * 360;
 
-  // Calculate vertical position for the canopy
+  // Immediate response: starts emerging on first touch, fully deployed at threshold
   const canopyTranslateY = isRefreshing
     ? 0
     : pullDistance > 0
-    ? Math.min(pullDistance - 70, 6)
-    : -130;
+    ? Math.min(-50 + pullDistance * 1.38, 8)
+    : -110;
 
   return (
     <>
