@@ -38,17 +38,9 @@ export function About({ cmsData }: SectionProps) {
               {cmsData?.headingHighlight2 || "Keahlian Presisi"}
             </span>
           </h2>
-          <p className="text-base md:text-lg text-slate-500 leading-relaxed font-normal max-w-xl">
-            <TypingText
-              text={cmsData.description}
-              speed={30}
-              delay={500}
-              startOnVisible
-            />
-          </p>
 
-          {/* Photo for Mobile View (Hidden on Desktop) */}
-          <div className="block md:hidden relative w-full reveal-right mt-8 mb-8">
+          {/* Photo for Mobile View (Placed directly below title, hidden on Desktop) */}
+          <div className="block md:hidden relative w-full reveal-right my-6">
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-xl border-4 border-white group">
               <img
                 src={
@@ -62,6 +54,15 @@ export function About({ cmsData }: SectionProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
             </div>
           </div>
+
+          <p className="text-base md:text-lg text-slate-500 leading-relaxed font-normal max-w-xl">
+            <TypingText
+              text={cmsData.description}
+              speed={30}
+              delay={500}
+              startOnVisible
+            />
+          </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 pt-4">
             <div className="flex-1 min-w-[200px] flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
               <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform">
