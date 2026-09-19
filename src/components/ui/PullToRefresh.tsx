@@ -3,14 +3,21 @@ import { RotateCw } from 'lucide-react';
 
 interface PullToRefreshProps {
   onRefresh?: () => Promise<void> | void;
+  onPullChange?: (active: boolean) => void;
   children?: React.ReactNode;
 }
 
-export default function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
+export default function PullToRefresh({ onRefresh, onPullChange, children }: PullToRefreshProps) {
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const startY = useRef(0);
   const isPulling = useRef(false);
+
+  // Notify parent component (Home/Navbar) to activate solid white mode
+  useEffect(() => {
+    const active = isRefreshing || pullDistance > 3;
+    onPullChange?.(active);
+  }, [pullDistance, isRefreshing, onPullChange]);
 
   useEffect(() => {
     // Touch event handlers for mobile
@@ -27,9 +34,10 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       const delta = currentY - startY.current;
 
       if (delta > 0 && window.scrollY <= 5) {
-        // Smooth, responsive resistance
-        const distance = Math.min(delta * 0.7, 75);
+        // Highly responsive, instant fluid tracking
+        const distance = Math.min(delta * 0.65, 65);
         setPullDistance(distance);
+        // Prevent native browser overscroll/pull
         if (delta > 8 && e.cancelable) {
           e.preventDefault();
         }
@@ -42,21 +50,22 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       if (!isPulling.current) return;
       isPulling.current = false;
 
-      // Sensitive trigger threshold (~45px of natural drag)
-      if (pullDistance >= 32) {
+      // Sensitive trigger threshold (~28px of pull)
+      if (pullDistance >= 26) {
         setIsRefreshing(true);
-        setPullDistance(45);
+        setPullDistance(0); // The elastic wave snaps back up immediately (Frame 4 & 5)
 
         try {
-          if ('vibrate' in navigator) navigator.vibrate(20);
+          if ('vibrate' in navigator) navigator.vibrate(25);
         } catch (_) {}
 
         try {
           if (onRefresh) {
             await Promise.resolve(onRefresh());
-            await new Promise((res) => setTimeout(res, 650));
+            // Hold briefly for visual satisfaction (Frame 5)
+            await new Promise((res) => setTimeout(res, 700));
           } else {
-            await new Promise((res) => setTimeout(res, 750));
+            await new Promise((res) => setTimeout(res, 800));
             window.location.reload();
             return;
           }
@@ -64,7 +73,6 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
           console.error(err);
         } finally {
           setIsRefreshing(false);
-          setPullDistance(0);
         }
       } else {
         setPullDistance(0);
@@ -73,7 +81,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
 
     // Mouse event handlers for desktop / simulator testing
     const handleMouseDown = (e: MouseEvent) => {
-      if (window.scrollY <= 5 && e.clientY < 120 && !isRefreshing) {
+      if (window.scrollY <= 5 && e.clientY < 140 && !isRefreshing) {
         startY.current = e.clientY;
         isPulling.current = true;
       }
@@ -83,7 +91,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       if (!isPulling.current || isRefreshing) return;
       const delta = e.clientY - startY.current;
       if (delta > 0 && window.scrollY <= 5) {
-        const distance = Math.min(delta * 0.7, 75);
+        const distance = Math.min(delta * 0.65, 65);
         setPullDistance(distance);
       } else {
         setPullDistance(0);
@@ -115,70 +123,80 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
     };
   }, [isRefreshing, pullDistance, onRefresh]);
 
-  // Dynamic calculation for the water wave dip depth
-  const activeDistance = isRefreshing ? 42 : pullDistance;
-  const showWave = activeDistance > 2 || isRefreshing;
+  // Gentle, wide, full-width fluid wave (spans entire 400px width with soft, gentle curvature)
+  const dipDepth = pullDistance > 0 ? Math.min(pullDistance * 0.55, 26) : 0;
+  const baseY = 1;
+  const centerDipY = baseY + dipDepth;
 
-  // dipY: starts at 4, smoothly expands down to ~52px
-  const dipY = activeDistance > 0 ? 4 + Math.min(activeDistance * 1.15, 48) : 4;
-  const rotationAngle = isRefreshing ? undefined : (pullDistance / 32) * 360;
+  // Ultra-smooth full-width Bezier wave (no sharp angles or narrow V-wedges)
+  const wavePath = `M 0 -100 L 400 -100 L 400 ${baseY} C 310 ${baseY}, 255 ${centerDipY}, 200 ${centerDipY} C 145 ${centerDipY}, 90 ${baseY}, 0 ${baseY} Z`;
 
-  // Badge scale & opacity based on pull progress
-  const badgeProgress = Math.min(activeDistance / 24, 1);
-  const badgeTop = dipY - 34;
+  // Circle vertical position below the header:
+  // - While pulling: nestled right in the gentle wave dip
+  // - While refreshing (Frame 5): floats below the header at top: 68px
+  // - At rest: tucked away
+  const circleTop = isRefreshing
+    ? 68
+    : pullDistance > 0
+    ? Math.max(48 + centerDipY - 14, 20)
+    : -60;
+
+  const showCircle = isRefreshing || pullDistance > 6;
+  const rotationAngle = isRefreshing ? undefined : (pullDistance / 26) * 360;
 
   return (
     <>
-      {/* Elastic Liquid Wave Canvas (Fixed at top of screen) */}
+      {/* Massive 600px pure white ceiling preventing ANY brown gap during iOS Safari rubber-band overscroll */}
+      <div className={`fixed top-[-600px] left-0 right-0 h-[600px] bg-white z-[60] transition-opacity duration-200 ${
+        isRefreshing || pullDistance > 0 ? 'opacity-100' : 'opacity-0'
+      }`} />
+
+      {/* Gentle Fluid Water Wave attached to bottom edge of the white Navbar */}
       <div
-        className={`fixed top-0 left-0 right-0 z-[100] pointer-events-none ${
-          isRefreshing
-            ? 'transition-all duration-300 ease-out'
-            : isPulling.current
-            ? ''
-            : 'transition-all duration-300 ease-out'
+        className={`fixed top-[52px] md:top-[60px] left-0 right-0 z-[45] pointer-events-none ${
+          isPulling.current ? 'transition-none' : 'transition-all duration-300 ease-out'
         }`}
         style={{
-          opacity: showWave ? 1 : 0,
+          opacity: pullDistance > 0 ? 1 : 0,
         }}
       >
-        {/* Dynamic Water Wave SVG with continuous, smooth cubic curves */}
-        <div className="w-full relative">
-          <svg
-            viewBox="0 0 400 65"
-            preserveAspectRatio="none"
-            className="w-full h-[65px] block filter drop-shadow-[0_8px_14px_rgba(0,0,0,0.09)]"
-          >
-            {/* Seamless white water wave stretching dynamically */}
-            <path
-              d={`M 0 -150 L 400 -150 L 400 4 C 280 4, 240 ${dipY}, 200 ${dipY} C 160 ${dipY}, 120 4, 0 4 Z`}
-              fill="#ffffff"
-            />
-          </svg>
+        <svg
+          viewBox="0 0 400 45"
+          preserveAspectRatio="none"
+          className="w-full h-9 block filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.06)] fill-white"
+        >
+          <path d={wavePath} />
+        </svg>
+      </div>
 
-          {/* Floating Circular Badge nested at the apex of the wave */}
-          <div
-            className="absolute left-1/2 -translate-x-1/2 w-10 h-10 bg-white rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.12)] border border-slate-100 flex items-center justify-center transition-opacity"
-            style={{
-              top: `${badgeTop}px`,
-              opacity: badgeProgress,
-              transform: `translateX(-50%) scale(${0.5 + badgeProgress * 0.5})`,
-            }}
-          >
-            <RotateCw
-              size={20}
-              className={`transition-colors ${
-                isRefreshing ? 'animate-spin text-[#b08d57]' : 'text-[#64748b]'
-              }`}
-              style={
-                !isRefreshing
-                  ? { transform: `rotate(${rotationAngle}deg)` }
-                  : undefined
-              }
-            />
-          </div>
+      {/* Floating Refresh Badge (Matches Frame 2, 3, and 5) */}
+      <div
+        className={`fixed left-1/2 -translate-x-1/2 z-[65] pointer-events-none ${
+          isPulling.current ? 'transition-none' : 'transition-all duration-300 ease-out'
+        }`}
+        style={{
+          top: `${circleTop}px`,
+          opacity: showCircle ? 1 : 0,
+          transform: `translateX(-50%) scale(${showCircle ? (isRefreshing ? 1 : Math.min(0.6 + (pullDistance / 26) * 0.4, 1)) : 0.5})`,
+        }}
+      >
+        <div className="w-11 h-11 bg-white rounded-full shadow-[0_6px_20px_rgba(0,0,0,0.14)] border border-slate-100 flex items-center justify-center p-2">
+          <RotateCw
+            size={22}
+            className={`transition-colors ${
+              isRefreshing
+                ? 'animate-spin text-[#b08d57]'
+                : 'text-[#64748b]'
+            }`}
+            style={
+              !isRefreshing
+                ? { transform: `rotate(${rotationAngle}deg)` }
+                : undefined
+            }
+          />
         </div>
       </div>
+
       {children}
     </>
   );

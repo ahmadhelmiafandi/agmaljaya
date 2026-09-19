@@ -35,6 +35,8 @@ export default function Home() {
     });
   };
 
+  const [isPullActive, setIsPullActive] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     loadSettings();
@@ -54,9 +56,9 @@ export default function Home() {
   if (!settings) return null; // Or a subtle loading screen
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+    <PullToRefresh onRefresh={handleRefresh} onPullChange={setIsPullActive}>
       <div className="min-h-screen font-sans bg-slate-50 text-slate-800 selection:bg-indigo-500/30 overflow-x-hidden">
-        <Navbar cmsData={settings} />
+        <Navbar cmsData={settings} forceSolid={isPullActive} />
 
         <main>
           <Hero cmsData={settings.hero} />
