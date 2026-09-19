@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-playfair: "Playfair Display", serif;
+  --font-cinzel: "Cinzel", serif;
+  /* Override Teal with Gold (Coklat Muda) based on #b08d57 */
+  --color-teal-50: #fdfaf6;
+  --color-teal-100: #fbf3e9;
+  --color-teal-200: #f5e4cc;
+  --color-teal-300: #ebd1aa;
+  --color-teal-400: #dfb983;
+  --color-teal-500: #d4a362;
+  --color-teal-600: #b08d57;
+  --color-teal-700: #a4723c;
+  --color-teal-800: #875c35;
+  --color-teal-900: #6d4b2e;
+  --color-teal-950: #3c2716;
+
+  /* Override Indigo with Espresso/Dark (Hitam elegan) based on #4a423e */
+  --color-indigo-50: #f6f6f5;
+  --color-indigo-100: #e9e8e7;
+  --color-indigo-200: #cdcac7;
+  --color-indigo-300: #ab9f99;
+  --color-indigo-400: #8a7c74;
+  --color-indigo-500: #6b5d55;
+  --color-indigo-600: #574b44;
+  --color-indigo-700: #4a423e;
+  --color-indigo-800: #3e3835;
+  --color-indigo-900: #36312f;
+  --color-indigo-950: #1d1a18;
+
+  /* Override Slate with Warm Dark (Neutral Hitam Klasik) */
+  --color-slate-50: #fafaf9;
+  --color-slate-100: #f5f5f4;
+  --color-slate-200: #e7e5e4;
+  --color-slate-300: #d6d3d1;
+  --color-slate-400: #a8a29e;
+  --color-slate-500: #78716c;
+  --color-slate-600: #57534e;
+  --color-slate-700: #44403c;
+  --color-slate-800: #292524;
+  --color-slate-900: #1c1917;
+  --color-slate-950: #0c0a09;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: #d4a362;
+  color: #ffffff;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(12, 10, 9, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Magazine Layout Utilities */
+.magazine-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.magazine-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+}
+
+.magazine-card:hover::after {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes shine {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(200%) skewX(-20deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes slow-scale {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modal-in {
+  0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-modal-in {
+  animation: modal-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* iOS safe area padding for mobile bottom bar */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Scroll Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-delay-100 { transition-delay: 100ms; }
+.reveal-delay-200 { transition-delay: 200ms; }
+.reveal-delay-300 { transition-delay: 300ms; }
+.reveal-delay-400 { transition-delay: 400ms; }
+.reveal-delay-500 { transition-delay: 500ms; }
+/* -- PRINT STYLES -- */
+@keyframes toast-in {
+    from { transform: translateX(100%) scale(0.9); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.animate-toast-in {
+    animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media print {
+  @page {
+    margin: 0; /* Removes browser default header (date/title) and footer (URL/page number) */
+  }
+
+  /* 1. Hide the entire layout EXCEPT the modal */
+  aside, nav {
+    display: none !important;
+  }
+  
+  /* Hide the underlying admin page content */
+  .space-y-8 > div:not(.fixed) {
+    display: none !important;
+  }
+  
+  /* Hide modal backdrop */
+  .backdrop-blur-md, .bg-slate-950\/40 {
+    display: none !important;
+  }
+  
+  /* 2. Unravel the modal wrapper */
+  .fixed.inset-0 {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    display: block !important; /* Kills the flexbox vertical centering */
+    padding: 0 !important;
+    background: white !important;
+  }
+  
+  /* 3. Unravel the modal content container */
+  .max-w-5xl {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* 4. Hide the modal header & tabs */
+  .max-w-5xl > .sticky.top-0,
+  .no-print {
+    display: none !important;
+  }
+  
+  /* 5. Fix scrollbars clipping content */
+  .overflow-y-auto {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+  
+  /* 6. Ensure background colors are printed */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Ensure text is black for sharp printing */
+  .text-slate-900, .text-slate-800, .text-slate-700, p, h1, h2, h3, h4, td, th {
+    color: #000 !important;
+  }
+}
+
+/* Fade-in & Scale-in animations (used by CheckoutModal overlays) */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-scale-in {
+  animation: scale-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 3D Card Flip Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+@keyframes sweep {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(150px); }
+  100% { transform: translateY(0); }
+}
+.animate-sweep {
+  animation: sweep 2.5s ease-in-out infinite;
+}
+

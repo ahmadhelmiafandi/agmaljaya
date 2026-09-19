@@ -1,0 +1,9 @@
+{
+  "name": "agmal-jaya-interior",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
