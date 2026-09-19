@@ -145,9 +145,9 @@ export default function Navbar({ cmsData }: NavbarProps) {
                 </button>
             </div>
 
-            {/* Mobile Nav */}
+            {/* Mobile Nav - Clean Modern Dropdown */}
             {mobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-xl shadow-2xl border-t border-slate-100 flex flex-col p-5 sm:p-6 space-y-2 animate-menu-dropdown origin-top">
+                <div className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-xl shadow-2xl border-t border-slate-100 flex flex-col p-5 sm:p-6 space-y-2 animate-menu-slide-down origin-top">
                     <div className="flex flex-col space-y-1">
                         {navLinks.map((link, idx) => (
                             <a

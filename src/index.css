@@ -46,6 +46,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -53,6 +54,8 @@ body {
   background-color: #ffffff;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 ::selection {
@@ -211,6 +214,23 @@ body {
 
 .animate-menu-cta {
   animation: menu-cta-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Sleek Mobile Menu Dropdown Animation */
+@keyframes menu-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-menu-slide-down {
+  animation: menu-slide-down 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .perspective-2000 {
