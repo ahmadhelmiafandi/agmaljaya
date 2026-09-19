@@ -114,33 +114,58 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
   const showIndicator = pullDistance > 5 || isRefreshing;
   const rotationAngle = isRefreshing ? undefined : (pullDistance / 55) * 360;
 
+  // Calculate vertical position for the canopy
+  const canopyTranslateY = isRefreshing
+    ? 0
+    : pullDistance > 0
+    ? Math.min(pullDistance - 72, 6)
+    : -130;
+
   return (
     <>
-      {/* Pull-to-Refresh Floating Indicator Badge */}
+      {/* Pull-to-Refresh Curved Canopy & Badge (Matches Reference Image 2) */}
       <div
-        className={`fixed left-1/2 -translate-x-1/2 z-[9999] pointer-events-none transition-all ${
-          isRefreshing ? 'duration-300 ease-out' : 'duration-75 ease-linear'
+        className={`fixed top-0 left-0 right-0 z-[100] pointer-events-none flex flex-col items-center transition-transform ${
+          isRefreshing
+            ? 'duration-300 ease-out'
+            : isPulling.current
+            ? 'duration-0'
+            : 'duration-300 ease-out'
         }`}
         style={{
-          top: `${isRefreshing ? 64 : pullDistance > 0 ? pullDistance + 8 : -70}px`,
-          opacity: showIndicator ? Math.min(pullDistance / 25, 1) : 0,
-          transform: `translateX(-50%) scale(${
-            showIndicator ? Math.min(0.7 + (pullDistance / 55) * 0.3, 1) : 0.6
-          })`,
+          transform: `translateY(${canopyTranslateY}px)`,
+          opacity: showIndicator ? 1 : 0,
         }}
       >
-        <div className="w-12 h-12 bg-white rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.18)] border border-slate-100 flex items-center justify-center p-2.5">
-          <RotateCw
-            size={22}
-            className={`text-[#b08d57] transition-transform ${
-              isRefreshing ? 'animate-spin' : ''
-            }`}
-            style={
-              !isRefreshing
-                ? { transform: `rotate(${rotationAngle}deg)` }
-                : undefined
-            }
-          />
+        {/* Solid white top bar */}
+        <div className="w-full h-8 bg-white" />
+
+        {/* Curved Wave Dip SVG */}
+        <div className="w-full relative">
+          <svg
+            viewBox="0 0 400 48"
+            preserveAspectRatio="none"
+            className="w-full h-10 fill-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.08)] block"
+          >
+            <path d="M 0 0 L 400 0 L 400 6 Q 295 14 238 26 C 222 39 212 45 200 45 C 188 45 178 39 162 26 Q 105 14 0 6 Z" />
+          </svg>
+
+          {/* White Circular Refresh Badge resting in the curved dip */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-1.5 w-11 h-11 bg-white rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.12)] border border-slate-100/90 flex items-center justify-center p-2">
+            <RotateCw
+              size={22}
+              className={`transition-colors ${
+                isRefreshing
+                  ? 'animate-spin text-[#b08d57]'
+                  : 'text-[#94a3b8]'
+              }`}
+              style={
+                !isRefreshing
+                  ? { transform: `rotate(${rotationAngle}deg)` }
+                  : undefined
+              }
+            />
+          </div>
         </div>
       </div>
       {children}
