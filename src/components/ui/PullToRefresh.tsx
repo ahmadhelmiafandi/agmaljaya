@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { RotateCw } from 'lucide-react';
 
 interface PullToRefreshProps {
@@ -6,59 +7,79 @@ interface PullToRefreshProps {
   children?: React.ReactNode;
 }
 
+function getScrollTop(): number {
+  return Math.max(
+    0,
+    window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+  );
+}
+
 export default function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
   const startY = useRef(0);
-  const isPulling = useRef(false);
+  const pulling = useRef(false);
+  const pullVal = useRef(0);
+  const busy = useRef(false);
+  const cbRef = useRef(onRefresh);
+  cbRef.current = onRefresh;
 
   useEffect(() => {
     // Touch event handlers for mobile
-    const handleTouchStart = (e: TouchEvent) => {
-      if (window.scrollY <= 5 && !isRefreshing) {
+    const onStart = (e: TouchEvent) => {
+      if (busy.current) return;
+      if (getScrollTop() <= 8) {
         startY.current = e.touches[0].clientY;
-        isPulling.current = true;
+        pulling.current = true;
+        setIsDragging(true);
       }
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isPulling.current || isRefreshing) return;
-      const currentY = e.touches[0].clientY;
-      const delta = currentY - startY.current;
+    const onMove = (e: TouchEvent) => {
+      if (!pulling.current || busy.current) return;
+      const y = e.touches[0].clientY;
+      const delta = y - startY.current;
+      const scrollTop = getScrollTop();
 
-      if (delta > 0 && window.scrollY <= 5) {
-        // Smooth, instant fluid tracking
-        const distance = Math.min(delta * 0.65, 75);
-        setPullDistance(distance);
-        // Prevent native browser overscroll/pull
-        if (delta > 10 && e.cancelable) {
+      if (delta > 0 && scrollTop <= 8) {
+        const dist = Math.min(delta * 0.55, 75);
+        setPullDistance(dist);
+        pullVal.current = dist;
+        if (delta > 6 && e.cancelable) {
           e.preventDefault();
         }
-      } else {
-        setPullDistance(0);
+      } else if (delta <= 0) {
+        if (pullVal.current > 0) {
+          setPullDistance(0);
+          pullVal.current = 0;
+        }
       }
     };
 
-    const handleTouchEnd = async () => {
-      if (!isPulling.current) return;
-      isPulling.current = false;
+    const onEnd = async () => {
+      if (!pulling.current) return;
+      pulling.current = false;
+      const val = pullVal.current;
 
-      // Sensitive trigger threshold (~26px of pull)
-      if (pullDistance >= 26) {
+      if (val >= 35) {
+        busy.current = true;
         setIsRefreshing(true);
         setPullDistance(0);
+        pullVal.current = 0;
+        setIsDragging(false);
 
         try {
           if ('vibrate' in navigator) navigator.vibrate(25);
         } catch (_) {}
 
         try {
-          if (onRefresh) {
-            await Promise.resolve(onRefresh());
-            // Hold briefly for visual satisfaction (matching Frame 5 of reference)
-            await new Promise((res) => setTimeout(res, 750));
+          if (cbRef.current) {
+            await Promise.resolve(cbRef.current());
+            await new Promise((r) => setTimeout(r, 750));
           } else {
-            await new Promise((res) => setTimeout(res, 850));
+            await new Promise((r) => setTimeout(r, 800));
             window.location.reload();
             return;
           }
@@ -66,101 +87,163 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
           console.error(err);
         } finally {
           setIsRefreshing(false);
+          busy.current = false;
         }
       } else {
         setPullDistance(0);
+        pullVal.current = 0;
+        setIsDragging(false);
       }
     };
 
-    // Mouse event handlers for desktop / simulator testing
-    const handleMouseDown = (e: MouseEvent) => {
-      if (window.scrollY <= 5 && e.clientY < 140 && !isRefreshing) {
-        startY.current = e.clientY;
-        isPulling.current = true;
-      }
+    document.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd, { passive: true });
+
+    // Mouse event handlers for desktop testing
+    let mouseDown = false;
+    const onMD = (e: MouseEvent) => {
+      if (busy.current || getScrollTop() > 8) return;
+      if (e.clientY > 130) return;
+      startY.current = e.clientY;
+      pulling.current = true;
+      mouseDown = true;
+      setIsDragging(true);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isPulling.current || isRefreshing) return;
+    const onMM = (e: MouseEvent) => {
+      if (!mouseDown || !pulling.current || busy.current) return;
       const delta = e.clientY - startY.current;
-      if (delta > 0 && window.scrollY <= 5) {
-        const distance = Math.min(delta * 0.65, 75);
-        setPullDistance(distance);
-      } else {
+      if (delta > 0 && getScrollTop() <= 8) {
+        const dist = Math.min(delta * 0.55, 75);
+        setPullDistance(dist);
+        pullVal.current = dist;
+      } else if (delta <= 0) {
         setPullDistance(0);
+        pullVal.current = 0;
       }
     };
 
-    const handleMouseUp = () => {
-      if (isPulling.current) {
-        handleTouchEnd();
+    const onMU = () => {
+      if (mouseDown) {
+        mouseDown = false;
+        onEnd();
       }
     };
 
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd);
-
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousedown', onMD);
+    document.addEventListener('mousemove', onMM);
+    document.addEventListener('mouseup', onMU);
 
     return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchstart', onStart);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+      document.removeEventListener('mousedown', onMD);
+      document.removeEventListener('mousemove', onMM);
+      document.removeEventListener('mouseup', onMU);
     };
-  }, [isRefreshing, pullDistance, onRefresh]);
+  }, []);
 
-  const showCircle = isRefreshing || pullDistance > 5;
-  const rotationAngle = isRefreshing ? undefined : (pullDistance / 26) * 360;
+  const showIndicator = isRefreshing || pullDistance > 3;
 
-  // Floating position:
-  // - While pulling: smoothly descends below the navbar (from top 15px down to ~80px)
-  // - While refreshing (Frame 5): stays floating at top: 80px
-  // - At rest: tucked away off-screen (-60px)
-  const circleTop = isRefreshing
-    ? 80
+  // Calculate vertical translation of the canopy
+  // Total canopy height is ~66px
+  const canopyTranslateY = isRefreshing
+    ? 0
     : pullDistance > 0
-    ? Math.min(15 + pullDistance * 1.0, 85)
-    : -60;
+    ? -66 + Math.min(pullDistance / 48, 1) * 66 + (pullDistance > 48 ? (pullDistance - 48) * 0.2 : 0)
+    : -70;
 
-  return (
-    <>
-      {/* Floating Refresh Badge (Clean, elegant, matches Frame 5 of reference without touching header) */}
+  const rotationAngle = isRefreshing ? undefined : (pullDistance / 42) * 360;
+
+  const transitionStyle = isDragging
+    ? 'none'
+    : 'transform 0.38s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease';
+
+  const indicator = createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 99999,
+        pointerEvents: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        transform: `translateY(${canopyTranslateY}px)`,
+        opacity: showIndicator ? 1 : 0,
+        transition: transitionStyle,
+      }}
+    >
+      {/* Massive pure white ceiling preventing any gap or brown line during iOS overscroll */}
       <div
-        className={`fixed left-1/2 -translate-x-1/2 z-[100] pointer-events-none ${
-          isPulling.current ? 'transition-none' : 'transition-all duration-300 ease-out'
-        }`}
         style={{
-          top: `${circleTop}px`,
-          opacity: showCircle ? 1 : 0,
-          transform: `translateX(-50%) scale(${
-            showCircle ? (isRefreshing ? 1 : Math.min(0.5 + (pullDistance / 26) * 0.5, 1)) : 0.4
-          })`,
+          position: 'absolute',
+          top: -800,
+          left: 0,
+          right: 0,
+          height: 800,
+          backgroundColor: '#ffffff',
         }}
-      >
-        <div className="w-11 h-11 bg-white rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.35)] border border-slate-100 flex items-center justify-center p-2">
+      />
+
+      {/* Curved Wave Canopy SVG (Matches Reference Design Gambar 2) */}
+      <div style={{ width: '100%', position: 'relative', overflow: 'visible' }}>
+        <svg
+          viewBox="0 0 400 66"
+          preserveAspectRatio="none"
+          style={{
+            width: '100%',
+            height: 66,
+            display: 'block',
+            fill: '#ffffff',
+            filter: 'drop-shadow(0 10px 18px rgba(0, 0, 0, 0.48)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))',
+          }}
+        >
+          <path d="M 0 0 L 400 0 L 400 9 C 340 10, 290 12, 260 17 C 242 20, 230 32, 224 44 C 218 56, 210 63, 200 63 C 190 63, 182 56, 176 44 C 170 32, 158 20, 140 17 C 110 12, 60 10, 0 9 Z" />
+        </svg>
+
+        {/* White Circular Refresh Badge resting perfectly in the curved cradle */}
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            top: 9,
+            width: 44,
+            height: 44,
+            backgroundColor: '#ffffff',
+            borderRadius: '50%',
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.16)',
+            border: '1px solid rgba(241, 245, 249, 0.95)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 8,
+          }}
+        >
           <RotateCw
             size={22}
-            className={`transition-colors ${
-              isRefreshing
-                ? 'animate-spin text-[#b08d57]'
-                : 'text-[#64748b]'
-            }`}
-            style={
-              !isRefreshing
-                ? { transform: `rotate(${rotationAngle}deg)` }
-                : undefined
-            }
+            strokeWidth={2.4}
+            style={{
+              color: isRefreshing ? '#b08d57' : '#798799',
+              transform: !isRefreshing ? `rotate(${rotationAngle}deg)` : undefined,
+              animation: isRefreshing ? 'ptr-spin 0.85s linear infinite' : undefined,
+              transition: 'color 0.2s ease',
+            }}
           />
         </div>
       </div>
+    </div>,
+    document.body
+  );
 
+  return (
+    <>
+      {indicator}
       {children}
     </>
   );

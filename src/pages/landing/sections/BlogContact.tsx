@@ -7,7 +7,8 @@ import {
   X,
   Clock,
   Calendar,
-  Instagram
+  Instagram,
+  ExternalLink
 } from "lucide-react";
 
 interface BlogProps {
@@ -311,7 +312,7 @@ export function Contact({ cmsData }: ContactProps) {
 
         <div className="flex-1 w-full">
           <div className="bg-slate-800 rounded-3xl p-6 border-2 border-slate-700 shadow-2xl relative">
-            <div className="absolute top-8 left-8 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg z-10 hidden md:block border border-slate-200">
+            <div className="mb-4 md:mb-0 md:absolute md:top-8 md:left-8 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg z-10 block border border-slate-200">
               <div className="flex items-center gap-3 mb-2">
                 <img
                   src="/brand/logo-icon-dark.png"
@@ -323,18 +324,29 @@ export function Contact({ cmsData }: ContactProps) {
                     {cmsData?.workshopName || "AGMAL JAYA INTERIOR Workshop"}
                   </h5>
                   <p className="text-[10px] text-slate-500">
-                    {cmsData?.workshopLocation || "GRGQ+X38 Bumiharjo, Jepara Regency, Central Java"}
+                    {cmsData?.workshopLocation || "Bagor, Bumiharjo, Jepara, Jawa Tengah"}
                   </p>
                 </div>
               </div>
-              <div className="text-xs text-slate-600 border-t border-slate-100 pt-2 flex items-center gap-1 font-bold">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                {cmsData?.workshopHours || "Buka hingga 17:00 WIB"}
+              <div className="text-xs text-slate-600 border-t border-slate-100 pt-2 flex items-center justify-between gap-2 font-bold">
+                <span className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  {cmsData?.workshopHours || "Buka hingga 17:00 WIB"}
+                </span>
+                <a
+                  href={cmsData?.mapDirectUrl || "https://maps.app.goo.gl/yUqCa27DvDex4TTS8?g_st=iw"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-[#b08d57] hover:text-[#8e7246] underline font-bold inline-flex items-center gap-1 ml-2"
+                >
+                  <span>Buka Maps</span>
+                  <ExternalLink size={10} />
+                </a>
               </div>
             </div>
             <div className="w-full h-64 md:h-80 lg:h-96 bg-slate-700 rounded-2xl overflow-hidden relative">
               <iframe
-                src={cmsData?.mapUrl || "https://maps.google.com/maps?q=GRGQ%2BX38+Bumiharjo%2C+Jepara+Regency%2C+Central+Java&t=&z=16&ie=UTF8&iwloc=&output=embed"}
+                src={cmsData?.mapUrl || "https://maps.google.com/maps?q=-6.4725558,110.8376500&t=&z=16&ie=UTF8&iwloc=&output=embed"}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -343,6 +355,15 @@ export function Contact({ cmsData }: ContactProps) {
                 referrerPolicy="no-referrer-when-downgrade"
                 title="AGMAL JAYA INTERIOR Workshop Location"
               ></iframe>
+              <a
+                href={cmsData?.mapDirectUrl || "https://maps.app.goo.gl/yUqCa27DvDex4TTS8?g_st=iw"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-3 right-3 bg-white/95 hover:bg-white text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 transition-all md:hidden border border-slate-200"
+              >
+                <span>Buka di Google Maps</span>
+                <ExternalLink size={12} />
+              </a>
             </div>
           </div>
         </div>

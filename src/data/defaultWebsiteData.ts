@@ -42,8 +42,9 @@ export const defaultData: WebsiteData = {
         contact: {
             phone: "+62 851 1372 3808",
             email: "hello@agmaljaya-interior.com",
-            address: "GRGQ+X38 Bumiharjo, Kec. Keling, Jepara Regency, Central Java",
-            mapUrl: "https://maps.google.com/maps?q=GRGQ%2BX38+Bumiharjo%2C+Jepara+Regency%2C+Central+Java&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            address: "Bagor, Bumiharjo, Kec. Keling, Jepara Regency, Central Java",
+            mapUrl: "https://maps.google.com/maps?q=-6.4725558,110.8376500&t=&z=16&ie=UTF8&iwloc=&output=embed",
+            mapDirectUrl: "https://maps.app.goo.gl/yUqCa27DvDex4TTS8?g_st=iw"
         },
         faqs: [
             { q: 'Apakah AGMAL JAYA INTERIOR melayani pengiriman & proyek ke seluruh Indonesia?', a: 'Ya! AGMAL JAYA INTERIOR melayani pemesanan, pengiriman, dan instalasi interior & furniture custom ke seluruh wilayah Indonesia (skala nasional). Workshop pusat kami berada di Jepara dengan packing kayu standar ekspedisi yang sangat aman, serta tim instalasi ahli siap diberangkatkan untuk perakitan di lokasi Anda (Jabodetabek, Jawa, Bali, Sumatera, Kalimantan, Sulawesi, dll).' },

@@ -43,6 +43,16 @@ function App() {
                 <Route path="community" element={<CMSCommunity />} />
                 <Route path="blog" element={<CMSBlog />} />
               </Route>
+              <Route path="cms" element={<AdminSettings />}>
+                <Route index element={<CMSHome />} />
+                <Route path="identity" element={<CMSIdentity />} />
+                <Route path="layout" element={<CMSHeaderFooter />} />
+                <Route path="contact" element={<CMSContact />} />
+                <Route path="templates" element={<CMSTemplates />} />
+                <Route path="catalog" element={<CMSCatalog />} />
+                <Route path="community" element={<CMSCommunity />} />
+                <Route path="blog" element={<CMSBlog />} />
+              </Route>
             </Route>
 
             {/* 404 Page */}
