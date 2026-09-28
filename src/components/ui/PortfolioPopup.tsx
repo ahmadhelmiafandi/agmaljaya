@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, MessageCircle, ArrowRight, CheckCircle2, CircleDollarSign, Info } from 'lucide-react';
+import { X, MessageCircle, ArrowRight, CheckCircle2, CircleDollarSign } from 'lucide-react';
 import { defaultData } from '../../data/defaultWebsiteData';
 
 interface PortfolioPopupProps {
@@ -92,17 +92,11 @@ export default function PortfolioPopup({ portfolioItems, contactData }: Portfoli
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-black/20" />
 
-                    {/* Top Badges */}
-                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap gap-1.5 sm:gap-2">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-md">
-                            <Sparkles size={10} className="text-slate-950" />
-                            Inspirasi Hari Ini
+                    {/* Top Category Badge */}
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                        <span className="bg-teal-600 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full shadow-lg">
+                            {selectedItem.category || "Proyek Portofolio"}
                         </span>
-                        {selectedItem.category && (
-                            <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-teal-600/90 text-white backdrop-blur-sm shadow-md">
-                                {selectedItem.category}
-                            </span>
-                        )}
                     </div>
 
                     {/* Bottom Status Tag */}
