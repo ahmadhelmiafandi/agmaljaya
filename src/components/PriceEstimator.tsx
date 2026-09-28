@@ -61,8 +61,8 @@ export default function PriceEstimator({ price }: PriceEstimatorProps) {
 
                 {/* Disclaimer */}
                 {isReady && (
-                    <p className="text-[10px] text-slate-500 mt-3 border-t border-slate-700/50 pt-3">
-                        *Harga final setelah survey langsung. Dapat berubah ±10-15%.
+                    <p className="text-[11px] text-slate-400 mt-3 border-t border-slate-700/50 pt-2.5 text-center font-light leading-relaxed">
+                        *Estimasi acuan awal. Biaya pasti disepakati transparan pada rincian RAB resmi.
                     </p>
                 )}
             </div>

@@ -52,13 +52,21 @@ export interface Settings {
     phone: string;
     email: string;
     mapUrl: string;
+    instagram?: string;
   };
   faqs: Array<{ q: string; a: string }>;
   testimonials: Array<{ text: string; name: string; loc: string }>;
   team: Array<{ name: string; role: string; img: string }>;
   services: Array<{ title: string; desc: string }>;
   howItWorks: Array<{ title: string; desc: string }>;
-  portfolio: Array<{ img: string; title: string }>;
+  portfolio: Array<{
+    img: string;
+    title: string;
+    span?: string;
+    desc?: string;
+    category?: string;
+    price?: string;
+  }>;
   products: Array<{ title: string; img: string; features: string }>;
   tech: {
     title: string;
@@ -90,11 +98,6 @@ const getWebsiteData = async (): Promise<WebsiteData> => {
         if (error) throw error;
         
         if (!data) {
-            // Seed default data if not exists
-            const { error: seedError } = await supabase
-                .from('website_data')
-                .insert([{ id: 'primary_data', content: defaultData }]);
-            if (seedError) console.error('Seeding error:', seedError);
             return defaultData;
         }
         

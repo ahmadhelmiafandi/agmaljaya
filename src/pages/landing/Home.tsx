@@ -13,6 +13,8 @@ import { Team, Testimonials, FAQ } from "./sections/MoreInfo";
 import { Blog, Contact } from "./sections/BlogContact";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import PullToRefresh from "../../components/ui/PullToRefresh";
+import FloatingWhatsApp from "../../components/ui/FloatingWhatsApp";
+import PortfolioPopup from "../../components/ui/PortfolioPopup";
 
 export default function Home() {
   const [settings, setSettings] = useState<Record<string, any> | null>(null);
@@ -75,9 +77,13 @@ export default function Home() {
 
         <Footer cmsData={settings} />
 
+        <PortfolioPopup portfolioItems={settings.portfolio} contactData={settings.contact} />
+
+        <FloatingWhatsApp phone={settings.contact?.phone} />
+
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className={`fixed bottom-8 right-8 z-50 inline-flex items-center justify-center w-12 h-12 rounded-full bg-teal-600 text-white shadow-2xl shadow-teal-600/20 hover:bg-teal-500 transition-all duration-300 ${showTopButton ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}`}
+          className={`fixed bottom-20 sm:bottom-24 md:bottom-26 right-5 sm:right-8 z-40 inline-flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-teal-600 text-white shadow-2xl shadow-teal-600/20 hover:bg-teal-500 transition-all duration-300 ${showTopButton ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}`}
           aria-label="Kembali ke atas"
         >
           <ChevronUp size={20} />

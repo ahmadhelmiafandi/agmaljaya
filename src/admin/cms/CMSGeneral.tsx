@@ -91,9 +91,9 @@ const CMSGeneral = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Input label="WhatsApp" value={settings.contact.phone} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, phone: v}} : null)} />
                         <Input label="Email Official" value={settings.contact.email} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, email: v}} : null)} />
-                        <Input label="Instagram (URL)" value={settings.contact.instagram} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, instagram: v}} : null)} />
-                        <Input label="Facebook (URL)" value={settings.contact.facebook} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, facebook: v}} : null)} />
-                        <Input label="TikTok (URL)" value={settings.contact.tiktok} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, tiktok: v}} : null)} />
+                        <Input label="Instagram (URL)" value={settings.contact.instagram || ''} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, instagram: v}} : null)} />
+                        <Input label="Facebook (URL)" value={settings.contact.facebook || ''} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, facebook: v}} : null)} />
+                        <Input label="TikTok (URL)" value={settings.contact.tiktok || ''} onChange={v => setSettings(prev => prev ? {...prev, contact: {...prev.contact, tiktok: v}} : null)} />
                     </div>
                 </section>
 
