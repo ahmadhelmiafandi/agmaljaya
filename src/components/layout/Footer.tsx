@@ -11,7 +11,7 @@ export default function Footer({ cmsData }: FooterProps) {
     const footerSettings = cmsData?.cmsData || cmsData?.footer; // Handle both direct pass and nested
     const settings = cmsData; // Easier access
     const phone = contactData?.phone || '+62 851 1372 3808';
-    const email = contactData?.email || 'hello@agmaljaya-interior.com';
+    const email = contactData?.email || 'contact@agmaljayainteior.com';
     return (
         <footer className="bg-slate-900 text-slate-300 py-12 md:py-16 border-t border-slate-800">
             <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">

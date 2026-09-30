@@ -41,7 +41,7 @@ export const defaultData: WebsiteData = {
         },
         contact: {
             phone: "+62 851 1372 3808",
-            email: "hello@agmaljaya-interior.com",
+            email: "contact@agmaljayainteior.com",
             address: "Bagor, Bumiharjo, Kec. Keling, Jepara Regency, Central Java",
             mapUrl: "https://maps.google.com/maps?q=-6.4725558,110.8376500&t=&z=16&ie=UTF8&iwloc=&output=embed",
             mapDirectUrl: "https://maps.app.goo.gl/yUqCa27DvDex4TTS8?g_st=iw",

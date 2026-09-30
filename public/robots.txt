@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://agmaljaya-interior.com/sitemap.xml
+Sitemap: https://www.agmaljayainteior.com/sitemap.xml
