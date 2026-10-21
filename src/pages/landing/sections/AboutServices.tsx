@@ -23,7 +23,7 @@ export function About({ cmsData }: SectionProps) {
       {/* Decorative Background Element */}
       <div className="absolute top-0 right-0 w-1/4 h-full bg-teal-50/50 -skew-x-12 transform origin-top translate-x-16 hidden lg:block"></div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24">
+      <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-14 lg:gap-20 xl:gap-24">
         <div className="flex-1 space-y-8 reveal-left">
           <div className="inline-flex items-center gap-3 text-xs font-black text-teal-600 uppercase tracking-[0.3em] bg-teal-50 px-4 py-2 rounded-full border border-teal-100">
             <Hammer size={14} /> {cmsData?.badge || "Lebih Dari Sekadar Furniture"}
@@ -63,13 +63,13 @@ export function About({ cmsData }: SectionProps) {
               startOnVisible
             />
           </p>
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 pt-4">
-            <div className="flex-1 min-w-[200px] flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
-              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform">
-                <ShieldCheck size={24} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 pt-4">
+            <div className="flex items-center gap-3.5 sm:gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
+              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform shrink-0">
+                <ShieldCheck size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 mb-0.5">
+                <h4 className="font-bold text-slate-900 mb-0.5 text-sm sm:text-base">
                   {cmsData?.feature1Title || "Garansi Kualitas"}
                 </h4>
                 <p className="text-xs text-slate-400">
@@ -77,12 +77,12 @@ export function About({ cmsData }: SectionProps) {
                 </p>
               </div>
             </div>
-            <div className="flex-1 min-w-[200px] flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
-              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform">
-                <Ruler size={24} />
+            <div className="flex items-center gap-3.5 sm:gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
+              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform shrink-0">
+                <Ruler size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 mb-0.5">
+                <h4 className="font-bold text-slate-900 mb-0.5 text-sm sm:text-base">
                   {cmsData?.feature2Title || "Presisi Milimeter"}
                 </h4>
                 <p className="text-xs text-slate-400">
@@ -90,13 +90,13 @@ export function About({ cmsData }: SectionProps) {
                 </p>
               </div>
             </div>
-            <div className="flex-1 min-w-[200px] flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
-              <div className="w-12 h-12 flex-shrink-0 rounded-xl bg-white shadow-sm text-teal-600 flex flex-col items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="flex items-center gap-3.5 sm:gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
+              <div className="w-12 h-12 flex-shrink-0 rounded-xl bg-white shadow-sm text-teal-600 flex flex-col items-center justify-center group-hover:scale-110 transition-transform shrink-0">
                 <span className="font-black text-lg leading-none">{cmsData.badgeValue || "5+"}</span>
                 <span className="text-[9px] font-bold uppercase">{cmsData?.badgeUnit || "Thn"}</span>
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 mb-0.5">
+                <h4 className="font-bold text-slate-900 mb-0.5 text-sm sm:text-base">
                   {cmsData.badgeTitle || "Tahun Pengalaman"}
                 </h4>
                 <p className="text-xs text-slate-400">
@@ -104,12 +104,12 @@ export function About({ cmsData }: SectionProps) {
                 </p>
               </div>
             </div>
-            <div className="flex-1 min-w-[200px] flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
-              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform">
-                <ThumbsUp size={24} />
+            <div className="flex items-center gap-3.5 sm:gap-4 p-4 md:p-5 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-teal-200 transition-colors">
+              <div className="p-3 rounded-xl bg-white shadow-sm text-teal-600 group-hover:scale-110 transition-transform shrink-0">
+                <ThumbsUp size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 mb-0.5">
+                <h4 className="font-bold text-slate-900 mb-0.5 text-sm sm:text-base">
                   {cmsData?.feature3Title || "Kepuasan Klien"}
                 </h4>
                 <p className="text-xs text-slate-400">
@@ -190,7 +190,7 @@ export function Services({ cmsData, contactData }: SectionProps) {
       <div className="absolute top-[-10%] left-[-5%] w-[40%] aspect-square bg-teal-500/5 rounded-full blur-[120px]"></div>
       <div className="absolute bottom-[-10%] right-[-5%] w-[40%] aspect-square bg-indigo-500/5 rounded-full blur-[120px]"></div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4 reveal">
           <div className="text-xs font-black text-teal-600 uppercase tracking-[0.4em] bg-white inline-block px-4 py-2 rounded-full border border-teal-100 shadow-sm">
             Layanan AGMAL JAYA INTERIOR

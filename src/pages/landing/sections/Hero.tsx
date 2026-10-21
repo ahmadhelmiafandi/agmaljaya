@@ -11,7 +11,7 @@ export default function Hero({ cmsData }: HeroProps) {
   if (!cmsData) return null;
 
   return (
-    <section className="relative min-h-screen flex items-center pt-24 pb-12 md:pt-32 lg:pt-40 md:pb-16 lg:pb-20 justify-center bg-slate-900 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:min-h-screen flex items-center pt-28 pb-16 md:pt-36 lg:pt-32 xl:pt-36 justify-center bg-slate-900 overflow-hidden">
       {/* Background Image & Overlay */}
       <div className="absolute inset-0 z-0 text-white flex justify-center items-center overflow-hidden">
         <img
@@ -22,8 +22,8 @@ export default function Hero({ cmsData }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/50 to-slate-900/90 mix-blend-multiply"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-12">
-        <div className="max-w-2xl text-left space-y-8 flex-1 animate-fade-in-up">
+      <div className="relative z-10 max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-6 lg:px-8 xl:px-12 2xl:px-16 w-full text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-10 lg:gap-14 xl:gap-16">
+        <div className="max-w-2xl xl:max-w-3xl 2xl:max-w-4xl text-left space-y-6 lg:space-y-8 flex-1 animate-fade-in-up">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-teal-500/30 bg-teal-500/10 backdrop-blur-md shadow-sm">
             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
             <span className="text-xs font-black text-teal-300 uppercase tracking-[0.3em] drop-shadow-sm">
@@ -31,7 +31,7 @@ export default function Hero({ cmsData }: HeroProps) {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.05] whitespace-pre-line">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-white tracking-tight leading-[1.08] whitespace-pre-line drop-shadow-sm">
             {cmsData.title.split("\n").map((line: string, i: number) => (
               <React.Fragment key={i}>
                 {i === 0 ? (
@@ -46,11 +46,11 @@ export default function Hero({ cmsData }: HeroProps) {
             ))}
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 leading-relaxed font-light max-w-xl">
+          <p className="text-base sm:text-lg md:text-xl lg:text-xl 2xl:text-2xl text-slate-300 leading-relaxed font-light max-w-xl xl:max-w-2xl">
             <TypingText text={cmsData.subtitle} speed={30} delay={500} />
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-6">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 sm:pt-6">
             <a
               href={`https://wa.me/${cmsData?.phone?.replace(/[^0-9]/g, '') || '6285113723808'}?text=Halo AGMAL JAYA INTERIOR, saya ingin konsultasi desain interior.`}
               target="_blank"
@@ -83,8 +83,6 @@ export default function Hero({ cmsData }: HeroProps) {
               className="rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] border-4 border-white/10"
               alt="Preview AGMAL JAYA INTERIOR"
             />
-
-
           </div>
         </div>
       </div>

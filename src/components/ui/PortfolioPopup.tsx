@@ -74,13 +74,13 @@ export default function PortfolioPopup({ portfolioItems, contactData }: Portfoli
 
             {/* Modal Dialog Card */}
             <div className="relative z-10 w-full max-w-sm sm:max-w-lg bg-white rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 transform transition-all animate-modal-in max-h-[92vh] flex flex-col">
-                {/* Close Button */}
+                {/* Close Button: Jelas, Berwarna Putih Kontras Tinggi & Mudah Dilihat */}
                 <button
                     onClick={() => setIsOpen(false)}
-                    className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 shadow-md active:scale-95"
+                    className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-slate-950 shadow-xl border border-slate-200/90 flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer group"
                     aria-label="Tutup Pop Up"
                 >
-                    <X size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <X size={18} strokeWidth={2.5} className="group-hover:rotate-90 transition-transform duration-200" />
                 </button>
 
                 {/* Project Image */}

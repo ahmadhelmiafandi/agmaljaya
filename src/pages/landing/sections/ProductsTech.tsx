@@ -54,7 +54,7 @@ export function Products({ cmsData }: SectionProps) {
 
     return (
         <section id="produk" className="py-12 md:py-20 lg:py-24 bg-white">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-14 lg:mb-16 gap-4 md:gap-6 reveal">
                     <div className="max-w-xl">
                         <div className="text-xs md:text-sm font-bold text-teal-600 uppercase tracking-widest mb-3 md:mb-4">Katalog Produk</div>

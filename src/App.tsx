@@ -19,6 +19,8 @@ import { ToastProvider } from './components/ui/Toast';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import NotFound from './pages/NotFound';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsOfService from './pages/legal/TermsOfService';
 
 function App() {
   return (
@@ -28,6 +30,10 @@ function App() {
           <Routes>
             {/* Landing Page Publik */}
             <Route path="/" element={<Home />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/terms" element={<TermsOfService />} />
 
             {/* Admin Dashboard */}
             <Route path="/admin" element={<AdminLayout />}>

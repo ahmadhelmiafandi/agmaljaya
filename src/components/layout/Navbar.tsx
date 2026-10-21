@@ -31,7 +31,10 @@ export default function Navbar({ cmsData }: NavbarProps) {
     ];
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        if (location.pathname !== '/') return;
+        if (location.pathname !== '/') {
+            setMobileMenuOpen(false);
+            return;
+        }
         e.preventDefault();
         const element = document.querySelector(href);
         if (element) {
@@ -49,7 +52,7 @@ export default function Navbar({ cmsData }: NavbarProps) {
 
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isHeaderSolid ? 'bg-white shadow-md py-3 md:py-4' : 'bg-transparent py-4 md:py-6'}`}>
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex items-center justify-between">
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 md:gap-3 group" onClick={() => setMobileMenuOpen(false)}>
@@ -77,7 +80,7 @@ export default function Navbar({ cmsData }: NavbarProps) {
                     {navLinks.map(link => (
                         <a
                             key={link.name}
-                            href={link.href}
+                            href={location.pathname === '/' ? link.href : `/${link.href}`}
                             onClick={(e) => handleNavClick(e, link.href)}
                             className={`relative text-sm font-medium transition-colors group ${navTextColor}`}
                         >
@@ -152,7 +155,7 @@ export default function Navbar({ cmsData }: NavbarProps) {
                         {navLinks.map((link, idx) => (
                             <a
                                 key={link.name}
-                                href={link.href}
+                                href={location.pathname === '/' ? link.href : `/${link.href}`}
                                 onClick={(e) => handleNavClick(e, link.href)}
                                 style={{ animationDelay: `${(idx + 1) * 55}ms` }}
                                 className="animate-menu-item text-slate-800 font-semibold text-base sm:text-lg py-3 px-3 rounded-xl border-b border-slate-100/70 hover:text-[#b08d57] hover:bg-slate-50/80 active:bg-slate-100/90 active:scale-[0.99] transition-all flex items-center justify-between group"

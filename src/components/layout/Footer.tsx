@@ -14,7 +14,7 @@ export default function Footer({ cmsData }: FooterProps) {
     const email = contactData?.email || 'contact@agmaljayainteior.com';
     return (
         <footer className="bg-slate-900 text-slate-300 py-12 md:py-16 border-t border-slate-800">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
 
                 {/* Brand */}
                 <div className="space-y-6">
@@ -113,13 +113,13 @@ export default function Footer({ cmsData }: FooterProps) {
 
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 border-t border-slate-800 pt-6 md:pt-8 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 border-t border-slate-800 pt-6 md:pt-8 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
                 <p className="text-[10px] md:text-xs text-slate-500 text-center md:text-left">
                     &copy; {new Date().getFullYear()} {settings?.footer?.copyright || settings?.site?.name || 'AGMAL JAYA INTERIOR'}. All rights reserved.
                 </p>
                 <div className="flex gap-4 md:gap-6 text-[10px] md:text-xs text-slate-500">
-                    <a href={settings?.footer?.privacyUrl || "#"} className="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href={settings?.footer?.termsUrl || "#"} className="hover:text-white transition-colors">Terms of Service</a>
+                    <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                    <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
                 </div>
             </div>
         </footer>

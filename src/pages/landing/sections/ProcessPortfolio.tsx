@@ -55,7 +55,7 @@ export function HowItWorks({ cmsData }: SectionProps) {
 
     return (
         <section className="py-12 md:py-20 lg:py-24 bg-white relative">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
                 <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16 lg:mb-20 space-y-4 reveal">
                     <div className="text-sm font-bold text-indigo-600 uppercase tracking-widest">{cmsData?.badge || "Alur Kerja Mudah"}</div>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">{cmsData?.heading || "Cara Kerja Pemesanan"}</h2>
@@ -142,7 +142,7 @@ export function Portfolio({ cmsData, contactData }: SectionProps & { contactData
 
     return (
         <section id="portfolio" className="py-12 md:py-20 lg:py-24 bg-[#fdfaf6]">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8 reveal">
                     <div className="space-y-3 md:space-y-4">
                         <div className="text-xs md:text-sm font-bold text-teal-600 uppercase tracking-[0.3em]">{cmsData?.badge || "Signature Collection"}</div>

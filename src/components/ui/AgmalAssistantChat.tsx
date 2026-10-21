@@ -321,53 +321,55 @@ export default function AgmalAssistantChat({ whatsappPhone = '+62 851 1372 3808'
       {isOpen && (
         <div className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:left-6 sm:bottom-6 w-auto sm:w-[440px] h-[610px] max-h-[90vh] bg-white rounded-2xl shadow-2xl shadow-slate-950/40 border border-slate-200 flex flex-col z-50 overflow-hidden font-sans transition-all duration-300 animate-fade-in-up">
           {/* Header Chatbot dengan Avatar Robot */}
-          <div className="bg-[#1c1917] text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-[#36312f]">
-            <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#946835] via-[#b08d57] to-[#dfb983] flex items-center justify-center p-0.5 shadow-md">
+          <div className="bg-[#1c1917] text-white px-3.5 py-3 sm:px-4 sm:py-3.5 flex items-center justify-between border-b border-[#36312f] gap-2">
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-[#946835] via-[#b08d57] to-[#dfb983] flex items-center justify-center p-0.5 shadow-md shrink-0">
                 <AgmalRobotAvatar
-                  size={30}
+                  size={26}
                   primaryColor="#1c1917"
                   faceColor="#ffffff"
                   featureColor="#1c1917"
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-[#1c1917] rounded-full"></span>
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-400 border-2 border-[#1c1917] rounded-full"></span>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-sm tracking-wide text-white">Agmal Assistant</h3>
-                  <span className="text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider bg-[#b08d57]/30 text-[#dfb983] rounded border border-[#b08d57]/40">
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-bold text-sm tracking-wide text-white truncate whitespace-nowrap">Agmal Assistant</h3>
+                  <span className="text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider bg-[#b08d57]/30 text-[#dfb983] rounded border border-[#b08d57]/40 shrink-0 hidden sm:inline-block">
                     AI Interior
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-300 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>Workshop Jepara • Respons Cepat</span>
+                <div className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] text-slate-300 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                  <span className="truncate">Workshop Jepara • Respons Cepat</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               <button
                 onClick={() => setShowSurveyModal(!showSurveyModal)}
                 title="Jadwalkan Survei Lokasi"
-                className="px-2.5 py-1 text-xs text-[#dfb983] bg-[#b08d57]/20 hover:bg-[#b08d57]/30 border border-[#b08d57]/40 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                className="w-8 h-8 text-[#dfb983] hover:text-white bg-[#b08d57]/20 hover:bg-[#b08d57]/35 border border-[#b08d57]/40 rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                aria-label="Jadwalkan Survei Lokasi"
               >
-                <Calendar size={13} />
-                <span className="hidden xs:inline">Survei</span>
+                <Calendar size={14} />
               </button>
               <button
                 onClick={handleResetChat}
                 title="Mulai Sesi Chat Baru"
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                className="w-8 h-8 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer flex items-center justify-center"
+                aria-label="Reset Chat"
               >
-                <RotateCcw size={15} />
+                <RotateCcw size={14} />
               </button>
               <button
                 onClick={() => setIsOpen(false)}
                 title="Tutup Chat"
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                className="w-8 h-8 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer flex items-center justify-center"
+                aria-label="Tutup Chat"
               >
-                <X size={17} />
+                <X size={16} />
               </button>
             </div>
           </div>
@@ -624,7 +626,7 @@ export default function AgmalAssistantChat({ whatsappPhone = '+62 851 1372 3808'
                     key={idx}
                     onClick={() => handleSendMessage(prompt)}
                     disabled={isLoading}
-                    className="shrink-0 px-2.5 py-1 bg-[#fdfaf6] hover:bg-[#fbf3e9] text-[#6d4b2e] hover:text-[#3c2716] rounded-md border border-[#ebd1aa] hover:border-[#b08d57] transition-colors cursor-pointer text-[11px] font-medium"
+                    className="shrink-0 px-3 py-1.5 bg-[#fdfaf6] hover:bg-[#fbf3e9] text-[#6d4b2e] hover:text-[#3c2716] rounded-full border border-[#ebd1aa] hover:border-[#b08d57] transition-all cursor-pointer text-[11px] font-medium shadow-2xs whitespace-nowrap"
                   >
                     {prompt}
                   </button>
@@ -646,24 +648,25 @@ export default function AgmalAssistantChat({ whatsappPhone = '+62 851 1372 3808'
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Tanya biaya per meter, bahan anti-air, kirim luar kota..."
+                    placeholder="Tanya biaya per meter, bahan anti-air, alur kirim..."
                     disabled={isLoading}
                     className="flex-1 bg-slate-50 border border-slate-300 focus:border-[#b08d57] focus:bg-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-colors"
                   />
                   <button
                     type="submit"
                     disabled={!inputText.trim() || isLoading}
-                    className="w-10 h-10 rounded-xl bg-[#1c1917] hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                    className="w-10 h-10 rounded-xl bg-[#1c1917] hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm"
                     aria-label="Kirim pesan"
                   >
-                    <Send size={16} />
+                    <Send size={15} />
                   </button>
                 </form>
-                <div className="mt-1.5 flex items-center justify-between text-[10px] text-slate-400 px-1">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 size={10} className="text-emerald-600" /> Data Resmi Workshop Agmal Jaya Jepara
+                <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-slate-400 px-1">
+                  <span className="flex items-center gap-1 truncate">
+                    <CheckCircle2 size={11} className="text-emerald-600 shrink-0" />
+                    <span className="truncate">Data Resmi Workshop Jepara</span>
                   </span>
-                  <span>WhatsApp: {whatsappPhone}</span>
+                  <span className="shrink-0 text-slate-500 font-medium">WA: {whatsappPhone}</span>
                 </div>
               </div>
             </>

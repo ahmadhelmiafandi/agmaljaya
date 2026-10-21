@@ -77,7 +77,7 @@ export function Blog({ cmsData, contactData }: BlogProps) {
 
   return (
     <section className="py-12 md:py-20 lg:py-24 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900">
@@ -256,7 +256,7 @@ export function Contact({ cmsData }: ContactProps) {
       id="kontak"
       className="py-12 md:py-20 lg:py-24 bg-slate-900 text-slate-300 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row gap-12 md:gap-16 items-center">
+      <div className="max-w-7xl xl:max-w-[1380px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10 flex flex-col lg:flex-row gap-12 md:gap-16 items-center">
         <div className="flex-1 space-y-8">
           <div className="text-sm font-bold text-teal-400 uppercase tracking-widest relative inline-block reveal">
             {cmsData?.contactBadge || "Siap untuk memulai?"}
