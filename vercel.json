@@ -2,7 +2,7 @@
   "name": "agmal-jaya-interior",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]

@@ -8,8 +8,9 @@ export default defineConfig({
     react(), 
     tailwindcss(),
     {
-      name: 'resolve-map-proxy',
+      name: 'api-proxy-handlers',
       configureServer(server) {
+        // Handler untuk /api/resolve-map
         server.middlewares.use('/api/resolve-map', async (req, res) => {
           try {
             const urlObj = new URL(req.url, `http://${req.headers.host}`);
@@ -29,6 +30,47 @@ export default defineConfig({
           } catch (err) {
             res.statusCode = 500;
             res.end(JSON.stringify({ error: String(err) }));
+          }
+        });
+
+        // Handler untuk /api/chat (Konsultan AI Agmal Assistant)
+        server.middlewares.use('/api/chat', async (req, res) => {
+          if (req.method === 'OPTIONS') {
+            res.statusCode = 200;
+            res.end();
+            return;
+          }
+          if (req.method === 'POST') {
+            let bodyStr = '';
+            req.on('data', chunk => { bodyStr += chunk; });
+            req.on('end', async () => {
+              try {
+                req.body = JSON.parse(bodyStr || '{}');
+              } catch (e) {
+                req.body = {};
+              }
+              if (!res.status) {
+                res.status = (code) => { res.statusCode = code; return res; };
+              }
+              if (!res.json) {
+                res.json = (data) => {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify(data));
+                  return res;
+                };
+              }
+              try {
+                const { default: handler } = await import('./api/chat.js');
+                await handler(req, res);
+              } catch (err) {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ error: String(err) }));
+              }
+            });
+          } else {
+            res.statusCode = 405;
+            res.end(JSON.stringify({ error: 'Method not allowed' }));
           }
         });
       }

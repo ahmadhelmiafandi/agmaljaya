@@ -84,7 +84,7 @@ export interface WebsiteData {
 
 import { defaultData } from '../data/defaultWebsiteData';
 
-const getWebsiteData = async (): Promise<WebsiteData> => {
+export const getWebsiteData = async (): Promise<WebsiteData> => {
     if (!isSupabaseConfigured) {
         return defaultData;
     }
@@ -109,6 +109,9 @@ const getWebsiteData = async (): Promise<WebsiteData> => {
 };
 
 export const api = {
+    getWebsiteData: async (): Promise<WebsiteData> => {
+        return getWebsiteData();
+    },
     getProducts: async (): Promise<Product[]> => {
         const data = await getWebsiteData();
         return data.products;

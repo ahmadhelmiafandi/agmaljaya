@@ -31,5 +31,13 @@ dist-ssr/
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
 .vercel
+
+# Presentation & PPT Assets (Tugas Kuliah / Offline Deck)
+*.pptx
+*.ppt
+*.key
+/public/presentation/
+/scripts/
+*Presentation*.pdf
+Green and Orange Vibrant Animated AI and Machine Learning Presentation.pdf

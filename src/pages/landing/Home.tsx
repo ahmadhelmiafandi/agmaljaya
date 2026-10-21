@@ -15,6 +15,7 @@ import { useScrollReveal } from "../../hooks/useScrollReveal";
 import PullToRefresh from "../../components/ui/PullToRefresh";
 import FloatingWhatsApp from "../../components/ui/FloatingWhatsApp";
 import PortfolioPopup from "../../components/ui/PortfolioPopup";
+import AgmalAssistantChat from "../../components/ui/AgmalAssistantChat";
 
 export default function Home() {
   const [settings, setSettings] = useState<Record<string, any> | null>(null);
@@ -80,6 +81,9 @@ export default function Home() {
         <PortfolioPopup portfolioItems={settings.portfolio} contactData={settings.contact} />
 
         <FloatingWhatsApp phone={settings.contact?.phone} />
+
+        {/* Konsultan Virtual Resmi AI - Agmal Assistant */}
+        <AgmalAssistantChat whatsappPhone={settings.contact?.phone} />
 
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
